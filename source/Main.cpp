@@ -10,12 +10,13 @@ int main(int argc, char *argv[]) {
 	SdlClass platform("Alpay's Chip-8 Emulator (AC-8)", VIDEO_WIDTH * 10, VIDEO_HEIGHT * 10, VIDEO_WIDTH, VIDEO_HEIGHT);
 	std::cout << "Type the file name you wish to load" << std::endl;
 	Chip8 chip8;
+	ASKGAME:
 	char gameName[32];
 	std::cin.getline(gameName, 32);
 	if (!chip8.loadRom(gameName))
 	{
-		std::cout << "Cannot find the game";
-		exit(2);
+		std::cout << "Cannot find the game" << std::endl;
+		goto ASKGAME;
 	}
 	else FreeConsole();
 	int videoPitch = sizeof(chip8.video[0]) * VIDEO_WIDTH;
@@ -30,7 +31,7 @@ int main(int argc, char *argv[]) {
 		auto currentTime = std::chrono::high_resolution_clock::now();
 		float dt = std::chrono::duration<float, std::chrono::milliseconds::period>(currentTime - lastCycleTime).count();
 
-		if (dt > 10)
+		if (dt > 5) // Decrease the number to make games faster
 		{
 			lastCycleTime = currentTime;
 
