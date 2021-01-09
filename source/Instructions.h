@@ -3,7 +3,7 @@
 #include "Chip-8.h"
 
 void Chip8::OP_00E0() {
-	memset(video, 0, 2048);
+	for (int i = 0; i < 2048; i++) video[i] = 0;
 	printf("Debug: Display Cleared!");
 }
 
