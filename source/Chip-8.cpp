@@ -89,7 +89,7 @@ bool Chip8::loadRom(const char* fileName)
 		file.seekg(0, std::ios::beg);
 		file.read(buffer, size);
 		file.close();
-		for (long i = 0; i < size; ++i)
+		for (int i = 0; i < size; ++i)
 		{
 			memory[0x200 + i] = buffer[i];
 		}
@@ -101,16 +101,12 @@ bool Chip8::loadRom(const char* fileName)
 
 void Chip8::cycles()
 {
-	opcode = (memory[pc] << 8u | memory[pc + 1]);
-	pc += 2;
-	((*this).*(table[(opcode & 0xF000u) >> 12u]))();
-	if (soundTimer > 0) soundTimer--;
-	if (delayTimer > 0) delayTimer--;
-}
-
-
-bool Chip8::isRunning()
-{
-	return running;
+	if (!paused) {
+		opcode = (memory[pc] << 8u | memory[pc + 1]);
+		pc += 2;
+		((*this).*(table[(opcode & 0xF000u) >> 12u]))();
+		if (soundTimer > 0) soundTimer--;
+		if (delayTimer > 0) delayTimer--;
+	}
 }
 
