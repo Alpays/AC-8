@@ -7,6 +7,7 @@
 #include <fstream>
 #include <chrono>
 #include <random>
+#include <string>
 
 typedef uint8_t uint8;
 typedef uint16_t uint16;
@@ -15,13 +16,12 @@ const unsigned int VIDEO_HEIGHT = 32;
 const unsigned int VIDEO_WIDTH = 64;
 
 class Chip8
-{	
+{
 public: // Functions
 	Chip8();
 	~Chip8();
 	bool loadRom(const char* fileName);
 	void cycles();
-	bool isRunning();
 public: // Variables
 	uint8 registers[16]{};
 	uint8 memory[4096];
@@ -32,11 +32,22 @@ public: // Variables
 	uint8 delayTimer{};
 	uint8 soundTimer{};
 	uint8 keypad[16]{};
-	uint32_t video[64 * 32]{}; 
+	uint32_t video[64 * 32]{};
 	uint16 opcode{};
-	bool running{};
+	bool paused = false;
 	std::default_random_engine randGen;
 	std::uniform_int_distribution<uint16_t> randByte;
+public:
+	uint8 savedRegisters[16]{};
+	uint16 savedIndex{};
+	uint16 savedPc{};
+	uint16 savedStack[16]{};
+	uint8 savedStackPointer{};
+	uint8 savedDelaytimer{};
+	uint8 savedSoundtimer{};
+	uint8 savedKeypad[16]{};
+	uint32_t savedVideo[64 * 32]{};
+	uint16 savedOpcode{};
 public: // Instructions
 	void OP_00E0();
 	void OP_00EE();
