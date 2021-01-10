@@ -1,5 +1,8 @@
 #include "SdlClass.h"
+
+extern "C" {
 #include "SDL.h"
+}
 
 SdlClass::SdlClass(const char* title, int width, int height, int textureW, int textureH)
 {
@@ -25,7 +28,7 @@ void SdlClass::Update(const void* buffer, int pitch)
 	SDL_RenderPresent(renderer);
 }
 
-bool SdlClass::Input(uint8_t* key)
+bool SdlClass::Input(uint8_t* key, Chip8* ch8)
 {
 	bool quit = false;
 	SDL_Event event;
@@ -58,6 +61,9 @@ bool SdlClass::Input(uint8_t* key)
 			case SDLK_r: key[0xD] = true; break;
 			case SDLK_f: key[0xE] = true; break;
 			case SDLK_v: key[0xF] = true; break;
+			case SDLK_p: 
+				ch8->paused ? ch8->paused = false : ch8->paused = true; 
+			break;
 			}
 		} break;
 		case SDL_KEYUP:
